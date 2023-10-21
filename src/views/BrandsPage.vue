@@ -1,10 +1,12 @@
 <template>
     <div class="Brands">
       <div class="container mx-auto px-4 sm:px-8">
+        <AddNew v-if="openAddNew" @closeAddNew="(openAddNew = false)" />
         <div class="py-8">
           <div class="flex justify-between items-center w-full">
             <h2 class="text-3xl font-semibold leading-tight">Brands</h2>
             <button type="button" 
+            @click="openAddNew = true"
                 class=" inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md">
                 Add New Brand
               </button>
@@ -130,11 +132,15 @@
   
   <script>
   import { mapGetters, mapActions } from "vuex";
+  import AddNew from '@/components/AddNew'
   export default {
     name: "BrandsView",
-    components: {},
+    components: {
+        AddNew
+    },
     data() {
       return{
+        openAddNew: false,
       }
     },
     created() {
