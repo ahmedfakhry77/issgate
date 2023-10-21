@@ -1,14 +1,10 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+import AdminLogin from "./AdminLogin";
+import brandsModule from "./modules/brands"; // Import the brands module
 
 export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
-  }
-})
+    brands: brandsModule, // Register the brands module
+  },
+  ...AdminLogin,
+});
