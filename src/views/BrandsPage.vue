@@ -2,8 +2,12 @@
     <div class="Brands">
       <div class="container mx-auto px-4 sm:px-8">
         <div class="py-8">
-          <div>
-            <h2 class="text-2xl font-semibold leading-tight">Brands</h2>
+          <div class="flex justify-between items-center w-full">
+            <h2 class="text-3xl font-semibold leading-tight">Brands</h2>
+            <button type="button" 
+                class=" inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md">
+                Add New Brand
+              </button>
           </div>
           <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div
