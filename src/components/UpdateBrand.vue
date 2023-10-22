@@ -54,17 +54,17 @@
               />
               <button
                 type="button"
-                class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md"
-                @click="updateCurrentBrand()"
-              >
-                Update
-              </button>
-              <button
-                type="button"
                 @click="$emit('closeUpdateCurrentBrand', false)"
                 class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium border border-schemePrimary-blue text-schemePrimary-blue hover:text-white hover:bg-schemePrimary-blue dark:border-white dark:text-white rounded-md"
               >
                 cancel
+              </button>
+              <button
+                type="button"
+                class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md"
+                @click="updateCurrentBrand()"
+              >
+                Update
               </button>
             </div>
             <LoadingComponent v-else />

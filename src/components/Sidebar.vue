@@ -4,10 +4,11 @@
       :class="[isOpen ? 'w-48 p-3' : 'w-14 p-2']"
       class="flex flex-col h-screen duration-300 side shadow bg-secondary relative"
     >
-      <svg
+      <span class=" bg-primary rounded-full absolute top-2 -right-4 cursor-pointer p-2">
+        <svg
         fill="none"
         :class="[isOpen ? '' : ' rotate-180']"
-        class="w-6 h-6 text-primary absolute top-2 -right-3 cursor-pointer duration-300"
+        class="w-6 h-6 text-white  duration-300"
         stroke="currentColor"
         stroke-width="1.5"
         viewBox="0 0 24 24"
@@ -21,6 +22,7 @@
           d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
         ></path>
       </svg>
+      </span>
       <ul
         :class="[isOpen ? 'space-y-1' : 'space-y-4']"
         class="pt-2 pb-4 text-sm"

@@ -86,8 +86,10 @@ const actions = {
   async postBrand({ commit }, item) {
     let formData = new FormData();
     item.NameByLang.forEach((language, index) => {
-      formData.append(`NameByLang[${index}].langId`, language.langId);
-      formData.append(`NameByLang[${index}].value`, language.value);
+      if (language.value) {
+        formData.append(`NameByLang[${index}].langId`, language.langId);
+        formData.append(`NameByLang[${index}].value`, language.value);
+      }
     });
     formData.append("Image", item.Image);
     return Repository.post(`${baseUrl}/api/Brand`, formData).then(

@@ -50,19 +50,20 @@
               <hr
                 class="my-4 h-px border-t-0 bg-primary opacity-100 dark:opacity-50 col-span-2"
               />
-              <button
-                type="button"
-                class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md"
-                @click="AddNewBrand()"
-              >
-                Add
-              </button>
+              
               <button
                 type="button"
                 @click="$emit('closeAddNew', false)"
                 class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium border border-schemePrimary-blue text-schemePrimary-blue hover:text-white hover:bg-schemePrimary-blue dark:border-white dark:text-white rounded-md"
               >
                 cancel
+              </button>
+              <button
+                type="button"
+                class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md"
+                @click="AddNewBrand()"
+              >
+                Add
               </button>
             </div>
             <LoadingComponent v-else />
@@ -123,13 +124,26 @@ export default {
     },
     AddNewBrand() {
       this.isloading = true;
-      this.postBrand({
+      if(this.Image){
+        this.postBrand({
         Image: this.Image,
         NameByLang: this.NameByLang,
       }).then(() => {
         this.isloading = false;
         this.$emit("closeAddNew", false);
       });
+      } else{
+        this.isloading = false;
+        this.$swal.fire({
+          position: "top-end",
+          icon: "error",
+          title: "upload Brand Image",
+          showConfirmButton: false,
+          timer: 1500,
+          width: 400,
+        });
+      }
+      
     },
   },
 };
