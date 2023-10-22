@@ -1,6 +1,9 @@
-import Repository, { baseUrl } from "../../repositories/repository.js";
+import {
+  axiosInstanceMultipart,
+  baseUrl,
+} from "../../repositories/repository.js";
 const state = {
-    languages: [],
+  languages: [],
 };
 
 const getters = {
@@ -13,7 +16,8 @@ const mutations = {
 };
 const actions = {
   async fetchLanguages({ commit }) {
-    return Repository.get(`${baseUrl}/api/Languages`)
+    return axiosInstanceMultipart
+      .get(`${baseUrl}/api/Languages`)
       .then((response) => {
         commit("setLanguages", response.data.data);
       })

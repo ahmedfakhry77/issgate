@@ -1,4 +1,7 @@
-import Repository, { baseUrl } from "../../repositories/repository.js";
+import {
+  axiosInstanceMultipart,
+  baseUrl,
+} from "../../repositories/repository.js";
 import Swal from "sweetalert2";
 const state = {
   Brands: [],
@@ -41,7 +44,8 @@ const mutations = {
 };
 const actions = {
   async fetchSingleBrand({ commit }, id) {
-    return Repository.get(`${baseUrl}/api/Brand/${id}`)
+    return axiosInstanceMultipart
+      .get(`${baseUrl}/api/Brand/${id}`)
       .then((response) => {
         commit("setSingleBrand", response.data.data);
       })
@@ -50,7 +54,8 @@ const actions = {
       });
   },
   async fetchBrands({ commit }) {
-    return Repository.get(`${baseUrl}/api/Brand`)
+    return axiosInstanceMultipart
+      .get(`${baseUrl}/api/Brand`)
       .then((response) => {
         commit("setBrands", response.data.data);
       })
@@ -65,7 +70,8 @@ const actions = {
       formData.append(`NameByLang[${index}].value`, language.value);
     });
     formData.append("Image", item.Image);
-    return Repository.put(`${baseUrl}/api/Brand?BrandId=${item.id}`, formData)
+    return axiosInstanceMultipart
+      .put(`${baseUrl}/api/Brand?BrandId=${item.id}`, formData)
       .then((response) => {
         commit("setUpdatedBrand", response.data);
         Swal.fire({
@@ -92,8 +98,9 @@ const actions = {
       }
     });
     formData.append("Image", item.Image);
-    return Repository.post(`${baseUrl}/api/Brand`, formData).then(
-      (response) => {
+    return axiosInstanceMultipart
+      .post(`${baseUrl}/api/Brand`, formData)
+      .then((response) => {
         commit("setBrand", response.data.data);
         Swal.fire({
           position: "top-end",
@@ -104,11 +111,11 @@ const actions = {
           width: 400,
         });
         return response;
-      }
-    );
+      });
   },
   async ActivationBrand({ commit }, id) {
-    return Repository.post(`${baseUrl}/api/Brand/Activation/${id}`)
+    return axiosInstanceMultipart
+      .post(`${baseUrl}/api/Brand/Activation/${id}`)
       .then((response) => {
         commit("setUpdatedActivationBrand", id);
         Swal.fire({
@@ -126,8 +133,9 @@ const actions = {
       });
   },
   async deleteBrand({ commit }, id) {
-    return Repository.delete(`${baseUrl}/api/Brand/Remove/${id}`).then(
-      (response) => {
+    return axiosInstanceMultipart
+      .delete(`${baseUrl}/api/Brand/Remove/${id}`)
+      .then((response) => {
         commit("setRemovedBrand", id);
         Swal.fire({
           position: "top-end",
@@ -138,8 +146,7 @@ const actions = {
           width: 400,
         });
         return response;
-      }
-    );
+      });
   },
 };
 

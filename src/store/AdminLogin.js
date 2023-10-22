@@ -1,4 +1,5 @@
-import Repository, { baseUrl } from "../repositories/repository.js";
+import { axiosInstanceJSON, baseUrl } from "../repositories/repository.js";
+import Swal from "sweetalert2";
 const state = function () {
   return {
     token: null || localStorage.getItem("token"),
@@ -29,19 +30,28 @@ const mutations = {
   },
 };
 const actions = {
-  async login({ commit }, { email, password , rememberMe }) {
+  async login({ commit }, { email, password, rememberMe }) {
     let data = {
       password: password,
       username: email,
       rememberMe: rememberMe,
     };
 
-    return Repository.post(`${baseUrl}/api/Auth/Authenticate`, data)
+    return axiosInstanceJSON
+      .post(`${baseUrl}/api/Auth/Authenticate`, data)
       .then((response) => {
         localStorage.setItem("token", response.data.Data.Token);
 
         commit("setAdmin", {
           idToken: response.data.Data.Token,
+        });
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Success",
+          showConfirmButton: false,
+          timer: 1500,
+          width: 400,
         });
         setTimeout(() => {
           location.reload();
