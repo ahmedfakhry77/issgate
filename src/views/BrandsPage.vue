@@ -183,6 +183,19 @@
                 </tr>
               </tbody>
             </table>
+            <div class="max-w-lg mx-auto my-12">
+              <pagination
+                :total-pages="
+                  getPagination.last_page == 0 ? 1 : getPagination.last_page
+                "
+                :total="getPagination.total"
+                :per-page="getPagination.per_page"
+                :current-page="getPagination.current_page"
+                :has-more-pages="hasMorePages"
+                @pagechanged="showMore"
+              >
+              </pagination>
+            </div>
           </div>
         </div>
       </div>
@@ -196,6 +209,7 @@ import AddNew from "@/components/AddNew";
 import UpdateBrand from "@/components/UpdateBrand.vue";
 import DeleteBrand from "@/components/DeleteBrand.vue";
 import ActivationBrand from "@/components/ActivationBrand";
+import Pagination from "@/components/Pagination.vue";
 export default {
   name: "BrandsView",
   components: {
@@ -203,6 +217,7 @@ export default {
     UpdateBrand,
     DeleteBrand,
     ActivationBrand,
+    Pagination,
   },
   data() {
     return {
@@ -210,6 +225,12 @@ export default {
       openUpdateModel: false,
       openDeleteModel: false,
       openActivationModel: false,
+      page: 1,
+      totalPages: 4,
+      total: 40,
+      perPage: 10,
+      currentPage: 1,
+      hasMorePages: true,
     };
   },
   created() {
@@ -217,7 +238,7 @@ export default {
     this.fetchLanguages();
   },
   computed: {
-    ...mapGetters("brands", ["getBrands"]),
+    ...mapGetters("brands", ["getBrands", "getPagination"]),
     ...mapGetters("languages", ["getLanguages"]),
   },
   methods: {
@@ -238,6 +259,10 @@ export default {
     ChangeBrandStatus(item) {
       this.selectedBrand = item;
       this.openActivationModel = true;
+    },
+    showMore(page) {
+      this.page = page;
+      this.currentPage = page;
     },
   },
 };

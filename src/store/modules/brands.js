@@ -5,6 +5,7 @@ import {
 import Swal from "sweetalert2";
 const state = {
   Brands: [],
+  Pagination: {},
   Brand: {},
 };
 
@@ -12,12 +13,16 @@ const getters = {
   getBrands(state) {
     return state.Brands;
   },
+  getPagination(state) {
+    return state.Pagination;
+  },
   getBrand(state) {
     return state.Brand;
   },
 };
 const mutations = {
   setBrands: (state, Brands) => (state.Brands = Brands),
+  setPagination: (state, Pagination) => (state.Pagination = Pagination),
   setSingleBrand: (state, Brand) => (state.Brand = Brand),
   setBrand: (state, Brand) => {
     state.Brands.push(Brand);
@@ -58,6 +63,7 @@ const actions = {
       .get(`${baseUrl}/api/Brand`)
       .then((response) => {
         commit("setBrands", response.data.data);
+        commit("setPagination", response.data.meta);
       })
       .catch((error) => {
         console.log(error);
