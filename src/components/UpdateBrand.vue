@@ -5,11 +5,13 @@
       <div
         class="relative p-4 h-90 dark:bg-schemePrimary-black dark:text-white"
       >
-        <h1 class="text-3xl font-bold text-center py-4 my-2 mx-auto capitalize bg-secondary text-white">
-          Add New Brand
+        <h1
+          class="text-3xl font-bold py-4 text-center my-2 mx-auto capitalize bg-secondary text-white"
+        >
+          Update Brand
         </h1>
-        <div class="mx-auto px-5">
-          <form>
+        <div class="mx-auto px-5 flex justify-center items-center w-full">
+          <form class="flex justify-center items-center">
             <div
               v-if="!isloading && NameByLang.length > 0"
               class="grid grid-cols-2 gap-2"
@@ -53,13 +55,13 @@
               <button
                 type="button"
                 class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium text-white bg-schemeSecondary-green rounded-md"
-                @click="AddNewBrand()"
+                @click="updateCurrentBrand()"
               >
-                Add
+                Update
               </button>
               <button
                 type="button"
-                @click="$emit('closeAddNew', false)"
+                @click="$emit('closeUpdateCurrentBrand', false)"
                 class="w-full inline-flex capitalize justify-center my-2 gap-2 px-5 py-2 font-medium border border-schemePrimary-blue text-schemePrimary-blue hover:text-white hover:bg-schemePrimary-blue dark:border-white dark:text-white rounded-md"
               >
                 cancel
@@ -76,10 +78,10 @@
 <script>
 import Modal from "./ModalComponent";
 import LoadingComponent from "./LoadingComponent.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  name: "IssgateAddNew",
-  props: ["languages"],
+  name: "IssgateUpdateBrand",
+  props: ["languages", "BrandId"],
   data() {
     return {
       isloading: false,
@@ -101,11 +103,29 @@ export default {
       };
       this.NameByLang.push(obj);
     });
-    this.isloading = false;
-  },
+    this.fetchSingleBrand(this.BrandId).then(() => {
+      this.Image = this.getBrand.image;
+      const changedNameMap = new Map(
+        this.getBrand.nameByLang.map((person) => [person.langId, person.value])
+      );
+      // Update the names in the people array
+      this.NameByLang = this.NameByLang.map((person) => {
+        const changedName = changedNameMap.get(person.langId);
+        if (changedName) {
+          return { langId: person.langId, value: changedName };
+        } else {
+          return person;
+        }
+      });
 
+      this.isloading = false;
+    });
+  },
+  computed: {
+    ...mapGetters("brands", ["getBrand"]),
+  },
   methods: {
-    ...mapActions("brands", ["postBrand"]),
+    ...mapActions("brands", ["updateBrand", "fetchSingleBrand"]),
     handleFileChange(event) {
       this.Image = event.target.files[0];
       this.previewImage();
@@ -121,14 +141,15 @@ export default {
         this.imagePreview = null;
       }
     },
-    AddNewBrand() {
+    updateCurrentBrand() {
       this.isloading = true;
-      this.postBrand({
+      this.updateBrand({
+        id: this.BrandId,
         Image: this.Image,
         NameByLang: this.NameByLang,
       }).then(() => {
         this.isloading = false;
-        this.$emit("closeAddNew", false);
+        this.$emit("closeUpdateCurrentBrand", false);
       });
     },
   },

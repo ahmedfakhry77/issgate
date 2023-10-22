@@ -3,7 +3,7 @@ import axios from "axios";
 const baseDomain = "https://interview.intelligent-systems-solutions.com";
 
 export const customHeaders = {
-  "Content-Type": "application/json",
+  "Content-Type": "multipart/form-data; boundary=<calculated when request is sent>",
   Accept: "application/json",
   "Access-Control-Allow-Origin": "*",
   Authorization: localStorage.getItem("token")
