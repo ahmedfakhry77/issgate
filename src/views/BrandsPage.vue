@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions ,mapMutations  } from "vuex";
 import AddNew from "@/components/AddNew";
 import UpdateBrand from "@/components/UpdateBrand.vue";
 import DeleteBrand from "@/components/DeleteBrand.vue";
@@ -241,8 +241,24 @@ export default {
     ...mapGetters("brands", ["getBrands", "getPagination"]),
     ...mapGetters("languages", ["getLanguages"]),
   },
+  watch: {
+    $route: {
+      async handler(route) {
+        if (!route.query.page) {
+          await this.$router.replace({ query: { ...route.query, page: 1 } });
+          return;
+        }
+        this.setFilter({ ...route.query });
+        this.$store.dispatch("brands/fetchBrands", route.query);
+      },
+      deep: true,
+      immediate: true,
+    },
+  },
+
   methods: {
     ...mapActions("brands", ["fetchBrands"]),
+    ...mapMutations("brands", ["setFilter"]),
     ...mapActions("languages", ["fetchLanguages"]),
     formatDate(dateTime) {
       const date = new Date(dateTime);
@@ -263,7 +279,14 @@ export default {
     showMore(page) {
       this.page = page;
       this.currentPage = page;
+      this.handlingRoute(page);
     },
+    handlingRoute(event) {
+      if (this.$route.path != `?page=${event}`) {
+        this.$router.push(`?page=${event}`);
+      }
+    },
+
   },
 };
 </script>

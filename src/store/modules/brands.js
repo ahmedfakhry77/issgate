@@ -5,6 +5,7 @@ import {
 import Swal from "sweetalert2";
 const state = {
   Brands: [],
+  filter: { page: 1 },
   Pagination: {},
   Brand: {},
 };
@@ -22,6 +23,9 @@ const getters = {
 };
 const mutations = {
   setBrands: (state, Brands) => (state.Brands = Brands),
+  setFilter(state, payload) {
+    state.filter = payload;
+  },
   setPagination: (state, Pagination) => (state.Pagination = Pagination),
   setSingleBrand: (state, Brand) => (state.Brand = Brand),
   setBrand: (state, Brand) => {
@@ -60,7 +64,9 @@ const actions = {
   },
   async fetchBrands({ commit }) {
     return axiosInstanceMultipart
-      .get(`${baseUrl}/api/Brand`)
+      .get(`${baseUrl}/api/Brand`, {
+        params: state.filter,
+      })
       .then((response) => {
         commit("setBrands", response.data.data);
         commit("setPagination", response.data.meta);
