@@ -186,7 +186,7 @@
             <div class="max-w-lg mx-auto my-12">
               <pagination
                 :total-pages="
-                  getPagination.last_page == 0 ? 1 : getPagination.last_page
+                  getPagination.last_page +1
                 "
                 :total="getPagination.total"
                 :per-page="getPagination.per_page"
